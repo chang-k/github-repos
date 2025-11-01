@@ -20,22 +20,3 @@ export interface SearchRepositoriesResponse {
   incomplete_results: boolean;
   items: Repository[];
 }
-
-export interface SearchParams {
-  q: string;
-  sort?: "stars" | "forks" | "updated";
-  order?: "asc" | "desc";
-  per_page?: number;
-  page?: number;
-}
-
-export interface SearchFilters {
-  minStars?: number;
-  maxStars?: number;
-  minWatchers?: number;
-  maxWatchers?: number;
-  minForks?: number;
-  maxForks?: number;
-  minIssues?: number;
-  maxIssues?: number;
-}

@@ -1,23 +1,18 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { RepositoryCard } from "@/entities/repository";
 import { InfiniteScrollTrigger } from "./InfiniteScrollTrigger";
 import { useInfiniteRepositories } from "../model/useInfiniteRepositories";
-import { SearchFormData, buildSearchQuery } from "@/features/search-repositories";
+import { SearchFormData } from "@/features/search-repositories";
 
 interface RepositoryListProps {
   filters: SearchFormData | null;
 }
 
 export const RepositoryList: React.FC<RepositoryListProps> = ({ filters }) => {
-  const searchQuery = useMemo(() => {
-    if (!filters) return "";
-    return buildSearchQuery(filters);
-  }, [filters]);
-
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteRepositories(searchQuery);
+    useInfiniteRepositories(filters);
 
   const repositories = data?.pages.flatMap((page) => page.items) ?? [];
 

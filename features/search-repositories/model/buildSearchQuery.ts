@@ -10,42 +10,45 @@ import { SearchFormData } from "./searchSchema";
  * - created: 作成日の範囲指定
  * - pushed: 最終更新日の範囲指定
  */
-export function buildSearchQuery(data: SearchFormData): string {
+export const buildSearchQuery = (data: SearchFormData): string => {
   const parts = [data.keyword];
 
   // Star
-  if (data.star.min !== null && data.star.min !== undefined && !isNaN(Number(data.star.min))) {
+  if (data.star.min !== "" && data.star.max !== "") {
+    parts.push(`stars:${data.star.min}..${data.star.max}`);
+  } else if (data.star.min !== "") {
     parts.push(`stars:>=${data.star.min}`);
-  }
-  if (data.star.max !== null && data.star.max !== undefined && !isNaN(Number(data.star.max))) {
+  } else if (data.star.max !== "") {
     parts.push(`stars:<=${data.star.max}`);
   }
 
   // Fork
-  if (data.fork.min !== null && data.fork.min !== undefined && !isNaN(Number(data.fork.min))) {
+  if (data.fork.min !== "" && data.fork.max !== "") {
+    parts.push(`forks:${data.fork.min}..${data.fork.max}`);
+  } else if (data.fork.min !== "") {
     parts.push(`forks:>=${data.fork.min}`);
-  }
-  if (data.fork.max !== null && data.fork.max !== undefined && !isNaN(Number(data.fork.max))) {
+  } else if (data.fork.max !== "") {
     parts.push(`forks:<=${data.fork.max}`);
   }
 
-  // Size(KB単位)
-  if (data.size.min !== null && data.size.min !== undefined && !isNaN(Number(data.size.min))) {
+  // Size（KB単位)
+  if (data.size.min !== "" && data.size.max !== "") {
+    parts.push(`size:${data.size.min}..${data.size.max}`);
+  } else if (data.size.min !== "") {
     parts.push(`size:>=${data.size.min}`);
-  }
-  if (data.size.max !== null && data.size.max !== undefined && !isNaN(Number(data.size.max))) {
+  } else if (data.size.max !== "") {
     parts.push(`size:<=${data.size.max}`);
   }
 
   // Duration - Created
-  if (data.duration.created) {
+  if (data.duration.created !== "") {
     parts.push(`created:>=${data.duration.created}`);
   }
 
   // Duration - Pushed
-  if (data.duration.pushed) {
+  if (data.duration.pushed !== "") {
     parts.push(`pushed:<=${data.duration.pushed}`);
   }
 
-  return parts.join("+");
+  return encodeURIComponent(parts.join(" "));
 }

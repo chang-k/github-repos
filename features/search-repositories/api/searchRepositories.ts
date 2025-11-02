@@ -10,15 +10,22 @@ interface SearchParams {
 export async function searchRepositories(
   params: SearchParams
 ): Promise<SearchRepositoriesResponse> {
-  const queryParams = new URLSearchParams();
+  const queryParts: string[] = [];
 
-  if (params.q) queryParams.append("q", params.q);
-  if (params.per_page)
-    queryParams.append("per_page", params.per_page.toString());
-  if (params.page) queryParams.append("page", params.page.toString());
+  if (params.q) {
+    queryParts.push(`q=${params.q}`);
+  }
+  if (params.per_page) {
+    queryParts.push(`per_page=${params.per_page}`);
+  }
+  if (params.page) {
+    queryParts.push(`page=${params.page}`);
+  }
+
+  const queryString = queryParts.join("&");
 
   return githubFetch<SearchRepositoriesResponse>(
-    `/search/repositories?${queryParams.toString()}`,
+    `/search/repositories?${queryString}`,
     {
       next: { revalidate: 60 },
     }

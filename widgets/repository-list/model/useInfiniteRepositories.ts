@@ -1,9 +1,15 @@
 "use client";
 
+import { useMemo } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { searchRepositories } from "@/features/search-repositories";
+import { searchRepositories, buildSearchQuery, SearchFormData } from "@/features/search-repositories";
 
-export const useInfiniteRepositories = (searchQuery: string) => {
+export const useInfiniteRepositories = (filters: SearchFormData | null) => {
+  const searchQuery = useMemo(() => {
+    if (!filters) return "";
+    return buildSearchQuery(filters);
+  }, [filters]);
+
   return useInfiniteQuery({
     queryKey: ["repositories", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
@@ -13,7 +19,7 @@ export const useInfiniteRepositories = (searchQuery: string) => {
       return searchRepositories({
         q: searchQuery,
         per_page: 10,
-        page: pageParam as number,
+        page: pageParam,
       });
     },
     getNextPageParam: (lastPage, allPages) => {

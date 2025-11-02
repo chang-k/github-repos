@@ -20,15 +20,15 @@ export const NumberRangeInput: React.FC<NumberRangeInputProps> = ({
     <div className="grid grid-cols-2 gap-4">
       <Input
         label={`最小${label}`}
-        type="number"
+        type="text"
         placeholder="0"
         error={errors?.min?.message}
         {...register(`${fieldName}.min`)}
       />
       <Input
         label={`最大${label}`}
-        type="number"
-        placeholder="0"
+        type="text"
+        placeholder="10000"
         error={errors?.max?.message}
         {...register(`${fieldName}.max`)}
       />

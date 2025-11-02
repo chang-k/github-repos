@@ -7,9 +7,9 @@ export const useSearchForm = () => {
     resolver: zodResolver(searchSchema),
     defaultValues: {
       keyword: "",
-      star: { min: null, max: null },
-      fork: { min: null, max: null },
-      size: { min: null, max: null },
+      star: { min: "", max: "" },
+      fork: { min: "", max: "" },
+      size: { min: "", max: "" },
       duration: { created: "", pushed: "" },
     },
   });

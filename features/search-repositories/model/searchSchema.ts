@@ -2,23 +2,31 @@ import { z } from "zod";
 
 const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-/**
- * MEMO:
- * 以下の記事にあるように、RHFが前提でcoerceを使うとunknown判定になるため
- * <number>を追記してnumber型と明示する必要がある。
- * 
- * https://qiita.com/pkshimizu_/items/dff0348a85e073e2ce0a
- */
+const numberStringSchema = z
+  .string()
+  .refine(
+    (val) => {
+      // 空文字列は許可
+      if (val === "") return true;
+      // 0以上の整数のみ許可
+      return /^\d+$/.test(val);
+    },
+    {
+      message: "0以上の整数のみ記入してください",
+    }
+  );
+
 const rangeSchema = z
   .object({
-    min: z.coerce.number<number>().nullable(),
-    max: z.coerce.number<number>().nullable(),
+    min: numberStringSchema,
+    max: numberStringSchema,
   })
   .refine(
     (data) => {
-      if (data.min !== null && data.max !== null) {
-        return data.max >= data.min;
+      if (data.min !== "" && data.max !== "") {
+        return Number(data.max) >= Number(data.min);
       }
+      // 片方が空文字列の場合はバリデーションをスキップ
       return true;
     },
     {

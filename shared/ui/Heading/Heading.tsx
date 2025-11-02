@@ -11,7 +11,7 @@ export const Heading: React.FC<HeadingProps> = ({
   children,
   className = "",
 }) => {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+  const Tag = `h${level}` as keyof React.JSX.IntrinsicElements;
 
   const styles = {
     1: "text-2xl font-bold",

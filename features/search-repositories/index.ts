@@ -4,6 +4,7 @@ export { SearchInput } from "./ui/SearchInput";
 export { SearchButton } from "./ui/SearchButton";
 export { FilterAccordion } from "./ui/FilterAccordion";
 export { NumberRangeInput } from "./ui/NumberRangeInput";
+export { DateInput } from "./ui/DateInput";
 
 // Model
 export { useSearchForm } from "./model/useSearchForm";

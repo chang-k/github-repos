@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { SearchFormData } from "@/features/search-repositories";
 
 export const useSearchPage = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filters, setFilters] = useState<SearchFormData | null>(null);
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
+  const handleSearch = (formData: SearchFormData) => {
+    setFilters(formData);
   };
 
   return {
-    searchQuery,
+    filters,
     handleSearch,
   };
 };

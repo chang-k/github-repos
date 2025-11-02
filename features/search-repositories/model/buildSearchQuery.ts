@@ -1,5 +1,15 @@
 import { SearchFormData } from "./searchSchema";
 
+/**
+ * GitHub検索APIのクエリ文字列を構築
+ *
+ * GitHub APIの検索でサポートされている条件:
+ * - stars: Star数の範囲指定
+ * - forks: Fork数の範囲指定
+ * - size: リポジトリサイズ（KB単位）の範囲指定
+ * - created: 作成日の範囲指定
+ * - pushed: 最終更新日の範囲指定
+ */
 export function buildSearchQuery(data: SearchFormData): string {
   const parts = [data.keyword];
 
@@ -19,5 +29,23 @@ export function buildSearchQuery(data: SearchFormData): string {
     parts.push(`forks:<=${data.fork.max}`);
   }
 
-  return parts.filter(Boolean).join(" ");
+  // Size(KB単位)
+  if (data.size.min !== null && data.size.min !== undefined && !isNaN(Number(data.size.min))) {
+    parts.push(`size:>=${data.size.min}`);
+  }
+  if (data.size.max !== null && data.size.max !== undefined && !isNaN(Number(data.size.max))) {
+    parts.push(`size:<=${data.size.max}`);
+  }
+
+  // Duration - Created
+  if (data.duration.created) {
+    parts.push(`created:>=${data.duration.created}`);
+  }
+
+  // Duration - Pushed
+  if (data.duration.pushed) {
+    parts.push(`pushed:<=${data.duration.pushed}`);
+  }
+
+  return parts.join("+");
 }

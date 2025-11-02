@@ -5,19 +5,25 @@ import { SearchInput } from "./SearchInput";
 import { SearchButton } from "./SearchButton";
 import { FilterAccordion } from "./FilterAccordion";
 import { NumberRangeInput } from "./NumberRangeInput";
+import { DateInput } from "./DateInput";
 import { useSearchForm } from "../model/useSearchForm";
-import { buildSearchQuery } from "../model/buildSearchQuery";
+import { SearchFormData } from "../model/searchSchema";
 
 interface SearchFormProps {
-  onSearch: (query: string) => void;
+  onSearch: (formData: SearchFormData) => void;
 }
 
 export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
-  const { register, handleSubmit, errors } = useSearchForm(onSearch);
+  const {
+    register,
+    handleSubmit,
+    formState: {
+      errors,
+    },
+  } = useSearchForm();
 
-  const onSubmit = (data: any) => {
-    const query = buildSearchQuery(data);
-    onSearch(query);
+  const onSubmit = (data: SearchFormData) => {
+    onSearch(data);
   };
 
   return (
@@ -35,22 +41,39 @@ export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
             label="Star数"
             fieldName="star"
             register={register}
-          />
-          <NumberRangeInput
-            label="Watcher数"
-            fieldName="watcher"
-            register={register}
+            errors={errors.star}
           />
           <NumberRangeInput
             label="Fork数"
             fieldName="fork"
             register={register}
+            errors={errors.fork}
           />
           <NumberRangeInput
-            label="Issue数"
-            fieldName="issue"
+            label="サイズ (KB)"
+            fieldName="size"
             register={register}
+            errors={errors.size}
           />
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">期間</label>
+            <div className="grid grid-cols-2 gap-2">
+              <DateInput
+                label="作成日 (YYYY-MM-DD)"
+                placeholder="2025-01-01"
+                fieldName="duration.created"
+                register={register}
+                error={errors.duration?.created}
+              />
+              <DateInput
+                label="最終更新日 (YYYY-MM-DD)"
+                placeholder="2025-12-31"
+                fieldName="duration.pushed"
+                register={register}
+                error={errors.duration?.pushed}
+              />
+            </div>
+          </div>
         </div>
       </FilterAccordion>
     </form>

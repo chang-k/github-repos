@@ -24,7 +24,7 @@ export const RepositoryList: React.FC<RepositoryListProps> = ({ filters }) => {
 
       <InfiniteScrollTrigger
         onInView={fetchNextPage}
-        hasNextPage={hasNextPage ?? false}
+        hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
       />
     </div>

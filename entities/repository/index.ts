@@ -1,5 +1,18 @@
-// Types
-export type { Repository, SearchRepositoriesResponse } from "./model/types";
+// Frontend Types
+export type {
+  RepositoryItem,
+  RepositoryDetail,
+} from "./model/types";
+
+// API Response Types
+export type {
+  RepositoryItemResponse,
+  RepositoryDetailResponse,
+  SearchRepositoriesResponse,
+} from "./model/api-types";
+
+// Converters
+export { toRepositoryItem, toRepositoryDetail } from "./model/converters";
 
 // UI Components
 export { RepositoryCard } from "./ui/RepositoryCard";

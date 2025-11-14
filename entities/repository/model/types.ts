@@ -1,22 +1,31 @@
-export interface Repository {
+/**
+ * リポジトリ詳細（フロントエンド用）
+ */
+export interface RepositoryDetail {
   id: number;
   name: string;
-  full_name: string;
+  fullName: string;
   owner: {
     login: string;
-    avatar_url: string;
+    avatarUrl: string;
   };
   description: string | null;
-  html_url: string;
-  stargazers_count: number;
-  watchers_count: number;
-  forks_count: number;
-  open_issues_count: number;
+  htmlUrl: string;
+  stargazersCount: number;
+  watchersCount: number;
+  forksCount: number;
+  openIssuesCount: number;
   language: string | null;
 }
 
-export interface SearchRepositoriesResponse {
-  total_count: number;
-  incomplete_results: boolean;
-  items: Repository[];
+/**
+ * リポジトリ一覧アイテム（フロントエンド用）
+ */
+export interface RepositoryItem {
+  id: number;
+  name: string;
+  owner: {
+    login: string;
+    avatarUrl: string;
+  };
 }

@@ -1,11 +1,14 @@
 import { githubFetch } from "@/shared/api/github-client";
-import { Repository } from "../model/types";
+import type { RepositoryDetailResponse } from "../model/api-types";
 
+/**
+ * GitHub APIから単一リポジトリの詳細を取得（APIレスポンスをそのまま返す）
+ */
 export async function getRepository(
   owner: string,
   repo: string
-): Promise<Repository> {
-  return githubFetch<Repository>(`/repos/${owner}/${repo}`, {
+): Promise<RepositoryDetailResponse> {
+  return githubFetch<RepositoryDetailResponse>(`/repos/${owner}/${repo}`, {
     next: { revalidate: 60 },
   });
 }

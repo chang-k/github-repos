@@ -1,4 +1,4 @@
-import { getRepository } from "@/entities/repository";
+import { getRepository, toRepositoryDetail } from "@/entities/repository";
 import { RepositoryDetailPage } from "@/widgets/repository-detail-page";
 
 interface DetailPageProps {
@@ -10,7 +10,10 @@ interface DetailPageProps {
 
 export default async function DetailPage({ params }: DetailPageProps) {
   const { owner, repo } = await params;
-  const repository = await getRepository(owner, repo);
+  const response = await getRepository(owner, repo);
+
+  // APIレスポンスをフロントエンド用の型に変換
+  const repository = toRepositoryDetail(response);
 
   return <RepositoryDetailPage repository={repository} />;
 }

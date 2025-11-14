@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Repository } from "@/entities/repository";
+import { RepositoryDetail } from "@/entities/repository";
 import { Heading } from "@/shared/ui/Heading";
 import { Text } from "@/shared/ui/Text";
 import { Button } from "@/shared/ui/Button";
@@ -8,7 +8,7 @@ import { Icon } from "@/shared/ui/Icon";
 import { RepositoryHeader, RepositoryStats } from "@/entities/repository";
 
 interface RepositoryDetailPageProps {
-  repository: Repository;
+  repository: RepositoryDetail;
 }
 
 export const RepositoryDetailPage: React.FC<RepositoryDetailPageProps> = ({
@@ -36,20 +36,18 @@ export const RepositoryDetailPage: React.FC<RepositoryDetailPageProps> = ({
           />
 
           <RepositoryStats
-            stars={repository.stargazers_count}
-            watchers={repository.watchers_count}
-            forks={repository.forks_count}
-            issues={repository.open_issues_count}
+            stars={repository.stargazersCount}
+            watchers={repository.watchersCount}
+            forks={repository.forksCount}
+            issues={repository.openIssuesCount}
           />
 
-          {repository.description && (
-            <div>
-              <Heading level={3} className="mb-3">
-                説明
-              </Heading>
-              <Text className="text-gray-700">{repository.description}</Text>
-            </div>
-          )}
+          <div>
+            <Heading level={3} className="mb-3">
+              説明
+            </Heading>
+            <Text className="text-gray-700">{repository.description}</Text>
+          </div>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ interface RepositoryHeaderProps {
   name: string;
   owner: {
     login: string;
-    avatar_url: string;
+    avatarUrl: string;
   };
   language: string | null;
 }
@@ -21,7 +21,7 @@ export const RepositoryHeader: React.FC<RepositoryHeaderProps> = ({
     <div className="flex items-start gap-4">
       <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
         <Image
-          src={owner.avatar_url}
+          src={owner.avatarUrl}
           alt={owner.login}
           fill
           className="object-cover"
@@ -32,7 +32,7 @@ export const RepositoryHeader: React.FC<RepositoryHeaderProps> = ({
           {name}
         </Heading>
         <Text className="text-gray-600 mb-1">{owner.login}</Text>
-        {language && <Text className="text-gray-600">{language}</Text>}
+        <Text className="text-gray-600">{language}</Text>
       </div>
     </div>
   );

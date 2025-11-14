@@ -19,7 +19,7 @@ export const RepositoryList: React.FC<RepositoryListProps> = ({ filters }) => {
   return (
     <div className="space-y-4">
       {repositories.map((repo) => (
-        <RepositoryCard key={repo.id} repository={repo} />
+        <RepositoryCard key={repo.id} repositoryItem={repo} />
       ))}
 
       <InfiniteScrollTrigger

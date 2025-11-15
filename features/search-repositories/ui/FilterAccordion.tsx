@@ -23,9 +23,7 @@ export const FilterAccordion: React.FC<FilterAccordionProps> = ({
         <Icon type={isOpen ? "chevron-up" : "chevron-down"} />
       </button>
 
-      {isOpen && (
-        <div className="p-4 border-t border-gray-200">{children}</div>
-      )}
+      {isOpen && <div className="p-4 border-t border-gray-200">{children}</div>}
     </div>
   );
 };

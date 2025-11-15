@@ -21,10 +21,12 @@ FigmaデザインをベースにしたGitHubリポジトリ検索アプリケー
 #### ❌ Atomic Design の課題
 
 1. **ビジネスロジックとUIの分離が困難**
+
    ```typescript
    // components/molecules/SearchFilters.tsx
    <Input {...register("minStars")} />  // react-hook-formに直接依存
    ```
+
    - Molecule層がフォームライブラリに依存
    - ドメイン知識（「最小Star数」）がハードコーディング
    - 再利用性が低い
@@ -42,6 +44,7 @@ FigmaデザインをベースにしたGitHubリポジトリ検索アプリケー
 #### ✅ Feature-Sliced Design のメリット
 
 1. **明確な責務分離**
+
    ```
    app/         # ルーティングのみ
    widgets/     # ページブロック（複数機能の統合）
@@ -85,10 +88,13 @@ src/
 ### 1. **app/ レイヤー** - アプリケーション層
 
 #### 役割
+
 Next.js App Routerのルーティング定義のみを担当。ビジネスロジックは一切含めない。
 
 #### 責務
+
 ✅ **やるべきこと:**
+
 - ルーティング定義（ファイルベース）
 - レイアウト定義（`layout.tsx`）
 - グローバルProviderの設定（TanStack Query、認証など）
@@ -97,6 +103,7 @@ Next.js App Routerのルーティング定義のみを担当。ビジネスロ�
 - メタデータ設定（SEO）
 
 ❌ **やってはいけないこと:**
+
 - ビジネスロジックの実装
 - データフェッチロジック（APIクエリ構築など）
 - 状態管理（useState、useReducerなど）
@@ -136,11 +143,13 @@ export default function Home() {
 #### 使い分けの判断基準
 
 **Server Componentを使う場合:**
+
 - SEOが重要（詳細ページ、ブログなど）
 - 初期表示を高速化したい
 - サーバー側でのみ動作する処理（データベース直接アクセスなど）
 
 **Client Componentを使う場合:**
+
 - インタラクティブな操作が必要（検索、フィルタリング）
 - ブラウザAPIを使用（localStorage、位置情報など）
 - 状態管理が必要
@@ -150,10 +159,13 @@ export default function Home() {
 ### 2. **widgets/ レイヤー** - ページブロック層
 
 #### 役割
+
 ページ単位の大きな独立したブロックを構成。複数のFeatureやEntityを組み合わせて1つの完結した機能ブロックを作る。
 
 #### 責務
+
 ✅ **やるべきこと:**
+
 - 複数のFeature/Entityの統合
 - ページレベルの状態管理（検索クエリ、フィルター条件など）
 - レイアウト構成（ヘッダー、フッター、サイドバーなど）
@@ -162,6 +174,7 @@ export default function Home() {
 - ローディング状態、エラー状態の管理
 
 ❌ **やってはいけないこと:**
+
 - フォームライブラリの直接使用（`useForm`など）
 - バリデーションロジック
 - API呼び出しロジックの詳細（クエリ構築など）
@@ -233,11 +246,13 @@ export const RepositorySearchPage = () => {
 #### 使い分けの判断基準
 
 **Widgetを作る場合:**
+
 - ページ全体または大きなセクション（検索ページ、ダッシュボード）
 - 複数のFeatureを組み合わせる必要がある
 - ページ固有の状態管理が必要
 
 **Widgetを作らない場合:**
+
 - 単一のFeatureのみで構成される場合はApp層で直接Featureを使う
 
 ---
@@ -245,10 +260,13 @@ export const RepositorySearchPage = () => {
 ### 3. **features/ レイヤー** - ビジネスロジック層
 
 #### 役割
+
 ユーザーの具体的なアクション（検索、フィルタリング、登録など）を実現する。ビジネスロジックとフォームロジックを管理。
 
 #### 責務
+
 ✅ **やるべきこと:**
+
 - フォームライブラリの使用（React Hook Form、Formikなど）
 - バリデーションロジック（Zodスキーマ）
 - APIクエリ構築（GitHub検索クエリ文字列など）
@@ -258,6 +276,7 @@ export const RepositorySearchPage = () => {
 - Entityの型を使用（Repository、Userなど）
 
 ❌ **やってはいけないこと:**
+
 - データフェッチの実行（TanStack Queryの直接使用）
 - ページレベルの状態管理
 - 他のFeatureへの依存
@@ -363,11 +382,13 @@ import { BookmarkButton } from '@/features/bookmark-repository';  // ❌ 禁止
 #### 使い分けの判断基準
 
 **新しいFeatureを作る場合:**
+
 - ユーザーの明確なアクション（検索、ログイン、ブックマークなど）
 - フォーム入力とバリデーションが必要
 - ビジネスルールの実装が必要
 
 **Featureに含めるべきもの:**
+
 - `/ui` - Feature固有のUI（フォーム、ボタン、パネルなど）
 - `/model` - ロジック（バリデーション、データ変換、フィルタリング）
 - `/api` - API呼び出し関数（実行はWidget層）
@@ -378,10 +399,13 @@ import { BookmarkButton } from '@/features/bookmark-repository';  // ❌ 禁止
 ### 4. **entities/ レイヤー** - データ表現層
 
 #### 役割
+
 ビジネスデータ（Repository、User、Productなど）の表現と表示のみを担当。アクティブな操作は一切持たない。
 
 #### 責務
+
 ✅ **やるべきこと:**
+
 - ビジネスエンティティの型定義（TypeScript interface）
 - データ表示用のUIコンポーネント（カード、リストアイテム）
 - データフォーマッター（日付、数値、通貨など）
@@ -389,6 +413,7 @@ import { BookmarkButton } from '@/features/bookmark-repository';  // ❌ 禁止
 - Shared UIの使用（Button、Text、Iconなど）
 
 ❌ **やってはいけないこと:**
+
 - ユーザーアクションの処理（ボタンクリック、フォーム送信など）
 - 状態管理（useState、useContext）
 - 外部データフェッチ（TanStack Query）
@@ -484,11 +509,13 @@ export const RepositoryCard = ({ repository }) => {
 #### 使い分けの判断基準
 
 **新しいEntityを作る場合:**
+
 - データベースのテーブルに対応する概念（Repository、User、Product）
 - 複数のFeatureで共有されるデータ構造
 - 表示のみで操作は不要
 
 **Entityに含めるべきもの:**
+
 - `/model/types.ts` - 型定義
 - `/model/formatters.ts` - データフォーマッター
 - `/ui` - データ表示用コンポーネント（受動的）
@@ -500,10 +527,13 @@ export const RepositoryCard = ({ repository }) => {
 ### 5. **shared/ レイヤー** - 共通インフラ層
 
 #### 役割
+
 プロジェクト全体、さらには他プロジェクトでも再利用可能な完全に抽象化された要素のみを配置。
 
 #### 責務
+
 ✅ **やるべきこと:**
+
 - 汎用UIコンポーネント（Button、Input、Modal、Tooltipなど）
 - ユーティリティ関数（日付操作、文字列操作など）
 - API基盤（fetchラッパー、エラーハンドリング）
@@ -512,6 +542,7 @@ export const RepositoryCard = ({ repository }) => {
 - 型ユーティリティ（Omit、Pick、Partialなど）
 
 ❌ **やってはいけないこと:**
+
 - ビジネスロジックへの依存
 - 上位レイヤーのimport（entities、features、widgets、app）
 - ドメイン固有の実装（Repository、Userなど）
@@ -646,11 +677,13 @@ export const RepositoryButton = ({ repository }: { repository: Repository }) => 
 #### 使い分けの判断基準
 
 **Sharedに配置する場合:**
+
 - 他プロジェクトでも使える汎用性
 - ビジネスロジックへの依存がゼロ
 - デザインシステムの一部
 
 **Sharedに配置しない場合:**
+
 - ドメイン固有の実装（→ entities/features）
 - プロジェクト固有のロジック（→ features）
 
@@ -717,6 +750,7 @@ export const RepositorySearchPage = () => {
 ```
 
 **理由:**
+
 1. **責務の分離**: フォームロジックはFeature層の責務
 2. **再利用性**: SearchFormは他のWidgetでも使える
 3. **テスト容易性**: Feature単体でテスト可能
@@ -726,12 +760,12 @@ export const RepositorySearchPage = () => {
 
 **A:** **受動的（Entity）** vs **能動的（Feature）**
 
-| 観点 | Entity | Feature |
-|------|--------|---------|
-| **アクション** | なし（データ表示のみ） | あり（検索、登録など） |
-| **状態管理** | 不可 | 可（フォーム状態など） |
-| **例** | RepositoryCard（表示） | SearchForm（検索実行） |
-| **Props** | データのみ受け取る | コールバック関数を受け取る |
+| 観点           | Entity                 | Feature                    |
+| -------------- | ---------------------- | -------------------------- |
+| **アクション** | なし（データ表示のみ） | あり（検索、登録など）     |
+| **状態管理**   | 不可                   | 可（フォーム状態など）     |
+| **例**         | RepositoryCard（表示） | SearchForm（検索実行）     |
+| **Props**      | データのみ受け取る     | コールバック関数を受け取る |
 
 ```typescript
 // Entity: 受動的
@@ -774,9 +808,13 @@ export const RepositorySearchPage = () => {
 // widgets/repository-list/model/useInfiniteRepositories.ts
 export const useInfiniteRepositories = (searchQuery: string) => {
   return useInfiniteQuery({
-    queryKey: ['repositories', searchQuery],
+    queryKey: ["repositories", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
-      return searchRepositories({ q: searchQuery, per_page: 10, page: pageParam });
+      return searchRepositories({
+        q: searchQuery,
+        per_page: 10,
+        page: pageParam,
+      });
     },
     // ...
   });
@@ -785,11 +823,14 @@ export const useInfiniteRepositories = (searchQuery: string) => {
 // ❌ NG: Feature層でデータフェッチ実行
 // features/search-repositories/model/useSearch.ts
 export const useSearch = () => {
-  const { data } = useInfiniteQuery({ /* ... */ });  // ❌ Widget層の責務
+  const { data } = useInfiniteQuery({
+    /* ... */
+  }); // ❌ Widget層の責務
 };
 ```
 
 **理由:**
+
 - データフェッチは「複数Featureの結果を統合」するWidget層の責務
 - API呼び出し関数の定義はFeature/Entity層で行い、実行はWidget層で行う
 
@@ -834,6 +875,7 @@ export const RepositorySearchPage = () => {
 **2. 複数Featureを統合する役割として適切**
 
 この状態は以下の役割を果たします：
+
 - `SearchForm`（Feature層）からの検索条件を受け取る
 - `RepositoryList`（Widget層）に検索条件を渡す
 - **Feature間の橋渡し役** = Widget層の責務
@@ -851,49 +893,53 @@ RepositoryList (Widget)
 ```typescript
 // ❌ NG: アプリ全体の状態をWidgetで管理（App層の責務）
 export const useSearchPage = () => {
-  const [currentUser, setCurrentUser] = useState(null);  // ❌ App層へ
-  const [globalTheme, setGlobalTheme] = useState("dark");  // ❌ App層へ
+  const [currentUser, setCurrentUser] = useState(null); // ❌ App層へ
+  const [globalTheme, setGlobalTheme] = useState("dark"); // ❌ App層へ
 };
 
 // ❌ NG: ビジネスロジックをWidgetで管理（Feature層の責務）
 export const useSearchPage = () => {
-  const { register, handleSubmit } = useForm();  // ❌ Feature層へ
-  const validateQuery = (query) => { /* ... */ };  // ❌ Feature層へ
+  const { register, handleSubmit } = useForm(); // ❌ Feature層へ
+  const validateQuery = (query) => {
+    /* ... */
+  }; // ❌ Feature層へ
 };
 
 // ❌ NG: フォーム状態をWidgetで管理（Feature層の責務）
 export const useSearchPage = () => {
-  const [keyword, setKeyword] = useState("");  // ❌ Feature層へ
-  const [minStars, setMinStars] = useState(0);  // ❌ Feature層へ
+  const [keyword, setKeyword] = useState(""); // ❌ Feature層へ
+  const [minStars, setMinStars] = useState(0); // ❌ Feature層へ
 };
 ```
 
 #### 状態管理の配置ルール
 
-| 状態の種類 | 配置レイヤー | 例 | 評価 |
-|-----------|-------------|-----|------|
-| **ページローカル状態** | Widget層 | searchQuery, filters | ✅ 9/10 |
-| **フォーム状態** | Feature層 | keyword, star.min, star.max | ✅ 10/10 |
-| **アプリ全体の状態** | App層 | currentUser, authToken | ✅ 8/10 |
-| **Feature間共有状態** | Jotai/Zustand | searchHistory, bookmarks | ✅ 9/10 |
+| 状態の種類             | 配置レイヤー  | 例                          | 評価     |
+| ---------------------- | ------------- | --------------------------- | -------- |
+| **ページローカル状態** | Widget層      | searchQuery, filters        | ✅ 9/10  |
+| **フォーム状態**       | Feature層     | keyword, star.min, star.max | ✅ 10/10 |
+| **アプリ全体の状態**   | App層         | currentUser, authToken      | ✅ 8/10  |
+| **Feature間共有状態**  | Jotai/Zustand | searchHistory, bookmarks    | ✅ 9/10  |
 
 #### Jotai/Zustandを使うべきケース
 
 **現在のページローカル状態:**
+
 - ❌ **Jotai不要**（2/10点） - 過剰設計
 - ✅ **useState推奨**（9/10点） - シンプルで十分
 
 **将来の機能追加時にJotaiを検討:**
+
 ```typescript
 // ✅ OK: 複数ページで共有する状態
 // features/search-repositories/model/searchHistoryAtoms.ts
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage } from "jotai/utils";
 
-export const searchHistoryAtom = atomWithStorage<string[]>('searchHistory', []);
+export const searchHistoryAtom = atomWithStorage<string[]>("searchHistory", []);
 
 // ✅ OK: ブックマーク機能（複数ページで共有）
 // features/bookmark-repository/model/bookmarkAtoms.ts
-export const bookmarkedReposAtom = atomWithStorage<number[]>('bookmarks', []);
+export const bookmarkedReposAtom = atomWithStorage<number[]>("bookmarks", []);
 
 // ✅ OK: 認証状態（アプリ全体で共有）
 // shared/state/authAtoms.ts
@@ -903,11 +949,13 @@ export const currentUserAtom = atom<User | null>(null);
 #### まとめ
 
 **Widget層での状態管理が許可されるケース:**
+
 - ✅ ページローカル状態（現在のページのみで使用）
 - ✅ 複数Featureの統合に必要な状態
 - ✅ Feature間のデータ受け渡し
 
 **Widget層で禁止される状態管理:**
+
 - ❌ フォーム状態（Feature層へ）
 - ❌ ビジネスロジック（Feature層へ）
 - ❌ アプリ全体の状態（App層またはJotai/Zustandへ）
@@ -959,15 +1007,15 @@ app → widgets → features/entities → shared
 ```typescript
 // ✅ OK: widgetがfeatureを使用
 // widgets/repository-search-page/ui/RepositorySearchPage.tsx
-import { SearchForm } from '@/features/search-repositories';
+import { SearchForm } from "@/features/search-repositories";
 
 // ✅ OK: featureがentityの型を使用
 // features/search-repositories/model/filterRepositories.ts
-import { Repository } from '@/entities/repository';
+import { Repository } from "@/entities/repository";
 
 // ✅ OK: entityがsharedのUIを使用
 // entities/repository/ui/RepositoryCard.tsx
-import { Text } from '@/shared/ui/Text';
+import { Text } from "@/shared/ui/Text";
 ```
 
 #### ❌ 禁止される依存方向
@@ -975,15 +1023,15 @@ import { Text } from '@/shared/ui/Text';
 ```typescript
 // ❌ NG: sharedが上位レイヤーを参照
 // shared/ui/Button/Button.tsx
-import { SearchFormData } from '@/features/search-repositories';  // 禁止！
+import { SearchFormData } from "@/features/search-repositories"; // 禁止！
 
 // ❌ NG: entityがfeatureを参照
 // entities/repository/ui/RepositoryCard.tsx
-import { useSearch } from '@/features/search-repositories';  // 禁止！
+import { useSearch } from "@/features/search-repositories"; // 禁止！
 
 // ❌ NG: featureが同一レイヤーの別featureを参照
 // features/search-repositories/model/useSearch.ts
-import { FilterPanel } from '@/features/filter-repositories';  // 禁止！
+import { FilterPanel } from "@/features/filter-repositories"; // 禁止！
 ```
 
 #### 📦 Public API パターン
@@ -992,12 +1040,13 @@ import { FilterPanel } from '@/features/filter-repositories';  // 禁止！
 
 ```typescript
 // features/search-repositories/index.ts
-export { SearchForm } from './ui/SearchForm';           // ✅ 公開
-export { useSearchForm } from './model/useSearchForm';  // ✅ 公開
+export { SearchForm } from "./ui/SearchForm"; // ✅ 公開
+export { useSearchForm } from "./model/useSearchForm"; // ✅ 公開
 // 内部実装は非公開
 ```
 
 これにより：
+
 - **カプセル化**: 内部実装の詳細を隠蔽
 - **変更容易性**: 内部を変更してもPublic APIが変わらなければ影響なし
 - **明確なインターフェース**: 何が使えるか一目瞭然
@@ -1041,6 +1090,7 @@ export const useSearchForm = () => {
 ```
 
 **結果:**
+
 - `shared/ui/Input` は他プロジェクトでも再利用可能
 - react-hook-formへの依存はFeature層に限定
 - ライブラリ変更時の影響範囲が明確
@@ -1062,7 +1112,7 @@ export const useSearchForm = () => {
 // ✅ OK: Feature内でロジックを完結
 // features/search-repositories/ui/SearchForm.tsx
 export const SearchForm = ({ onSearch }) => {
-  const { register, handleSubmit } = useSearchForm();  // 内部で管理
+  const { register, handleSubmit } = useSearchForm(); // 内部で管理
   // ...
 };
 ```
@@ -1099,16 +1149,16 @@ const [filters, setFilters] = useState(null);
 
 ### フレームワーク・ライブラリ
 
-| 技術 | バージョン | 使用箇所 | 役割 |
-|------|-----------|---------|------|
-| **Next.js** | 15.1.0 | `app/` | App Router、SSR/ISR |
-| **React** | 19.0.0 | 全体 | UIライブラリ |
-| **TypeScript** | 5.7.2 | 全体 | 型安全性 |
-| **Tailwind CSS** | 3.4.17 | 全体 | スタイリング |
-| **TanStack Query** | 5.62.11 | `widgets/`, `features/` | データフェッチ、無限スクロール |
-| **React Hook Form** | 7.54.2 | `features/search-repositories` | フォーム管理 |
-| **Zod** | latest | `features/search-repositories` | スキーマバリデーション |
-| **react-intersection-observer** | 9.14.0 | `widgets/repository-list` | 無限スクロール検知 |
+| 技術                            | バージョン | 使用箇所                       | 役割                           |
+| ------------------------------- | ---------- | ------------------------------ | ------------------------------ |
+| **Next.js**                     | 15.1.0     | `app/`                         | App Router、SSR/ISR            |
+| **React**                       | 19.0.0     | 全体                           | UIライブラリ                   |
+| **TypeScript**                  | 5.7.2      | 全体                           | 型安全性                       |
+| **Tailwind CSS**                | 3.4.17     | 全体                           | スタイリング                   |
+| **TanStack Query**              | 5.62.11    | `widgets/`, `features/`        | データフェッチ、無限スクロール |
+| **React Hook Form**             | 7.54.2     | `features/search-repositories` | フォーム管理                   |
+| **Zod**                         | latest     | `features/search-repositories` | スキーマバリデーション         |
+| **react-intersection-observer** | 9.14.0     | `widgets/repository-list`      | 無限スクロール検知             |
 
 ---
 
@@ -1119,11 +1169,13 @@ const [filters, setFilters] = useState(null);
 **使用場所:** `app/`
 
 **役割:**
+
 - ファイルベースルーティング
 - Server/Client Componentの使い分け
 - ISR（Incremental Static Regeneration）
 
 **実装例:**
+
 ```typescript
 // app/page.tsx - Client Component（検索・フィルター）
 import { RepositorySearchPage } from '@/widgets/repository-search-page';
@@ -1139,6 +1191,7 @@ export default async function DetailPage({ params }) {
 ```
 
 **設計判断:**
+
 - **検索ページ**: Client Component（インタラクティブ）
 - **詳細ページ**: Server Component（SEO、初期表示高速化）
 
@@ -1149,15 +1202,17 @@ export default async function DetailPage({ params }) {
 **使用場所:** `widgets/repository-list/model/useInfiniteRepositories.ts`
 
 **役割:**
+
 - サーバー状態管理
 - 無限スクロール（`useInfiniteQuery`）
 - キャッシュ管理
 
 **実装例:**
+
 ```typescript
 export const useInfiniteRepositories = (searchQuery: string) => {
   return useInfiniteQuery({
-    queryKey: ['repositories', searchQuery],
+    queryKey: ["repositories", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
       return searchRepositories({
         q: searchQuery,
@@ -1166,8 +1221,13 @@ export const useInfiniteRepositories = (searchQuery: string) => {
       });
     },
     getNextPageParam: (lastPage, allPages) => {
-      const totalFetched = allPages.reduce((acc, page) => acc + page.items.length, 0);
-      return totalFetched < lastPage.total_count ? allPages.length + 1 : undefined;
+      const totalFetched = allPages.reduce(
+        (acc, page) => acc + page.items.length,
+        0
+      );
+      return totalFetched < lastPage.total_count
+        ? allPages.length + 1
+        : undefined;
     },
     initialPageParam: 1,
   });
@@ -1175,6 +1235,7 @@ export const useInfiniteRepositories = (searchQuery: string) => {
 ```
 
 **特徴:**
+
 - 10件ずつページネーション
 - 自動キャッシュ（60秒）
 - `queryKey`で検索条件ごとにキャッシュ分離
@@ -1186,11 +1247,13 @@ export const useInfiniteRepositories = (searchQuery: string) => {
 **使用場所:** `features/search-repositories/model/`
 
 **役割:**
+
 - フォーム状態管理
 - バリデーション
 - パフォーマンス最適化（非制御コンポーネント）
 
 **実装例:**
+
 ```typescript
 // searchSchema.ts - Zodスキーマ
 const rangeSchema = z.object({
@@ -1208,7 +1271,7 @@ export const searchSchema = z.object({
 // useSearchForm.ts - React Hook Form統合
 export const useSearchForm = () => {
   const { register, handleSubmit, formState } = useForm<SearchFormData>({
-    resolver: zodResolver(searchSchema),  // Zod連携
+    resolver: zodResolver(searchSchema), // Zod連携
     defaultValues: {
       keyword: "",
       star: { min: null, max: null },
@@ -1220,6 +1283,7 @@ export const useSearchForm = () => {
 ```
 
 **データ構造の設計:**
+
 ```typescript
 {
   keyword: string,
@@ -1231,6 +1295,7 @@ export const useSearchForm = () => {
 ```
 
 **メリット:**
+
 - ネスト構造で意味的に明確
 - Zodによる型安全なバリデーション
 - `z.coerce.number()`で自動型変換
@@ -1240,20 +1305,22 @@ export const useSearchForm = () => {
 #### 4. **GitHub API統合**
 
 **使用場所:**
+
 - `shared/api/github-client.ts` - 基盤
 - `features/search-repositories/api/searchRepositories.ts` - 検索
 - `entities/repository/api/getRepository.ts` - 詳細取得
 
 **GitHub APIの制約と対応:**
 
-| フィールド | API検索サポート | 実装方法 |
-|-----------|----------------|---------|
-| Star数 | ✅ サポート | `stars:>=1000` クエリ |
-| Fork数 | ✅ サポート | `forks:100..500` クエリ |
-| Watcher数 | ❌ 非サポート | クライアント側フィルタリング |
-| Issue数 | ❌ 非サポート | クライアント側フィルタリング |
+| フィールド | API検索サポート | 実装方法                     |
+| ---------- | --------------- | ---------------------------- |
+| Star数     | ✅ サポート     | `stars:>=1000` クエリ        |
+| Fork数     | ✅ サポート     | `forks:100..500` クエリ      |
+| Watcher数  | ❌ 非サポート   | クライアント側フィルタリング |
+| Issue数    | ❌ 非サポート   | クライアント側フィルタリング |
 
 **実装例:**
+
 ```typescript
 // buildSearchQuery.ts - APIクエリ構築
 export function buildSearchQuery(data: SearchFormData): string {
@@ -1264,20 +1331,26 @@ export function buildSearchQuery(data: SearchFormData): string {
   if (data.fork.max) parts.push(`forks:<=${data.fork.max}`);
 
   // Watcher/Issue はクライアント側フィルタリング
-  return parts.join(' ');
+  return parts.join(" ");
 }
 
 // filterRepositories.ts - クライアント側フィルタリング
-export function filterRepositories(repos: Repository[], filters: SearchFormData) {
-  return repos.filter(repo => {
-    if (filters.watcher.min && repo.watchers_count < filters.watcher.min) return false;
-    if (filters.issue.max && repo.open_issues_count > filters.issue.max) return false;
+export function filterRepositories(
+  repos: Repository[],
+  filters: SearchFormData
+) {
+  return repos.filter((repo) => {
+    if (filters.watcher.min && repo.watchers_count < filters.watcher.min)
+      return false;
+    if (filters.issue.max && repo.open_issues_count > filters.issue.max)
+      return false;
     return true;
   });
 }
 ```
 
 **データフロー:**
+
 ```
 GitHub API検索
   ↓ (Star/Fork絞り込み)
@@ -1295,6 +1368,7 @@ filterRepositories
 **設定:** `tailwind.config.ts`
 
 **FSD対応:**
+
 ```typescript
 export default {
   content: [
@@ -1389,6 +1463,7 @@ github-repos/
 ## セットアップ
 
 ### 前提条件
+
 - Node.js 18.x以上
 - npm または yarn
 
@@ -1437,6 +1512,7 @@ npm start
 3. 「検索」ボタンをクリック
 
 **例:**
+
 ```
 キーワード: react
 最小Star数: 1000    ← GitHub APIで検索
@@ -1489,7 +1565,7 @@ features/
 ```typescript
 // Module Federation対応
 // widgets/ごとに別アプリケーション化可能
-export { RepositorySearchPage } from './widgets/repository-search-page';
+export { RepositorySearchPage } from "./widgets/repository-search-page";
 ```
 
 ### 3. デザインシステムの分離

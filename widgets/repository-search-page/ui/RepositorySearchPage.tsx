@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Heading } from "@/shared/ui/Heading";
 import { SearchForm } from "@/features/search-repositories";
+import { Heading } from "@/shared/ui/Heading";
 import { RepositoryList } from "@/widgets/repository-list";
 import { useSearchPage } from "../model/useSearchPage";
 

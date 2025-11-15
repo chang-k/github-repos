@@ -1,8 +1,8 @@
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { RepositoryItem } from "../model/types";
+import React from "react";
 import { Text } from "@/shared/ui/Text";
+import { RepositoryItem } from "../model/types";
 
 interface RepositoryCardProps {
   repositoryItem: RepositoryItem;

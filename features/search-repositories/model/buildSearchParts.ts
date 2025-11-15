@@ -47,4 +47,4 @@ export const buildSearchParts = (data: SearchFormData): string => {
   }
 
   return parts.join(" ");
-}
+};

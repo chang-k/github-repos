@@ -1,5 +1,5 @@
-import { SearchFormData } from "./searchSchema";
 import { buildSearchParts } from "./buildSearchParts";
+import { SearchFormData } from "./searchSchema";
 
 /**
  * GitHub検索APIのクエリ文字列を構築（URLエンコード済み）
@@ -9,4 +9,4 @@ import { buildSearchParts } from "./buildSearchParts";
  */
 export const buildSearchQuery = (data: SearchFormData): string => {
   return encodeURIComponent(buildSearchParts(data));
-}
+};

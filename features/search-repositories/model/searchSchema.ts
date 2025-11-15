@@ -2,19 +2,17 @@ import { z } from "zod";
 
 const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-const numberStringSchema = z
-  .string()
-  .refine(
-    (val) => {
-      // 空文字列は許可
-      if (val === "") return true;
-      // 0以上の整数のみ許可
-      return /^\d+$/.test(val);
-    },
-    {
-      message: "0以上の整数のみ記入してください",
-    }
-  );
+const numberStringSchema = z.string().refine(
+  (val) => {
+    // 空文字列は許可
+    if (val === "") return true;
+    // 0以上の整数のみ許可
+    return /^\d+$/.test(val);
+  },
+  {
+    message: "0以上の整数のみ記入してください",
+  }
+);
 
 const rangeSchema = z
   .object({

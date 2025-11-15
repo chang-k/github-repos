@@ -1,9 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { searchRepositories, buildSearchQuery, SearchFormData } from "@/features/search-repositories";
+import { useMemo } from "react";
 import { toRepositoryItem } from "@/entities/repository";
+import {
+  searchRepositories,
+  buildSearchQuery,
+  SearchFormData,
+} from "@/features/search-repositories";
 
 export const useInfiniteRepositories = (filters: SearchFormData | null) => {
   const searchQuery = useMemo(() => {

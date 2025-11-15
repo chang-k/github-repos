@@ -1,5 +1,5 @@
-import React from "react";
 import Image from "next/image";
+import React from "react";
 import { Heading } from "@/shared/ui/Heading";
 import { Text } from "@/shared/ui/Text";
 

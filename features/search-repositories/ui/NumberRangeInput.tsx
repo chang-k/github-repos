@@ -1,6 +1,6 @@
 import React from "react";
-import { Input } from "@/shared/ui/Input";
 import { UseFormRegister, FieldError } from "react-hook-form";
+import { Input } from "@/shared/ui/Input";
 import { SearchFormData } from "../model/searchSchema";
 
 interface NumberRangeInputProps {

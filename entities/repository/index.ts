@@ -1,8 +1,5 @@
 // Frontend Types
-export type {
-  RepositoryItem,
-  RepositoryDetail,
-} from "./model/types";
+export type { RepositoryItem, RepositoryDetail } from "./model/types";
 
 // API Response Types
 export type {

@@ -1,5 +1,8 @@
-import type { RepositoryDetail, RepositoryItem } from './types';
-import type { RepositoryDetailResponse, RepositoryItemResponse } from './api-types';
+import type {
+  RepositoryDetailResponse,
+  RepositoryItemResponse,
+} from "./api-types";
+import type { RepositoryDetail, RepositoryItem } from "./types";
 
 /**
  * RepositoryDetailResponseをRepositoryDetailに変換
@@ -28,9 +31,7 @@ export function toRepositoryDetail(
 /**
  * RepositoryItemResponseをRepositoryItemに変換
  */
-export function toRepositoryItem(
-  res: RepositoryItemResponse
-): RepositoryItem {
+export function toRepositoryItem(res: RepositoryItemResponse): RepositoryItem {
   return {
     id: res.id,
     name: res.name,

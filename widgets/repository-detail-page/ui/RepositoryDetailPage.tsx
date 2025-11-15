@@ -1,11 +1,11 @@
-import React from "react";
 import Link from "next/link";
+import React from "react";
 import { RepositoryDetail } from "@/entities/repository";
-import { Heading } from "@/shared/ui/Heading";
-import { Text } from "@/shared/ui/Text";
-import { Button } from "@/shared/ui/Button";
-import { Icon } from "@/shared/ui/Icon";
 import { RepositoryHeader, RepositoryStats } from "@/entities/repository";
+import { Button } from "@/shared/ui/Button";
+import { Heading } from "@/shared/ui/Heading";
+import { Icon } from "@/shared/ui/Icon";
+import { Text } from "@/shared/ui/Text";
 
 interface RepositoryDetailPageProps {
   repository: RepositoryDetail;
@@ -19,7 +19,10 @@ export const RepositoryDetailPage: React.FC<RepositoryDetailPageProps> = ({
       <div className="max-w-4xl mx-auto px-6 py-8">
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <Link href="/">
-            <Button variant="secondary" className="mb-6 flex items-center gap-2">
+            <Button
+              variant="secondary"
+              className="mb-6 flex items-center gap-2"
+            >
               <Icon type="arrow-left" />
               戻る
             </Button>

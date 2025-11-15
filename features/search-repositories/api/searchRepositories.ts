@@ -1,5 +1,5 @@
-import { githubFetch } from "@/shared/api/github-client";
 import type { SearchRepositoriesResponse } from "@/entities/repository";
+import { githubFetch } from "@/shared/api/github-client";
 
 interface SearchParams {
   q: string;

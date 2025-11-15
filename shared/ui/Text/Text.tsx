@@ -17,7 +17,5 @@ export const Text: React.FC<TextProps> = ({
     lg: "text-lg",
   };
 
-  return (
-    <p className={`${sizeStyles[size]} ${className}`}>{children}</p>
-  );
+  return <p className={`${sizeStyles[size]} ${className}`}>{children}</p>;
 };

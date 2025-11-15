@@ -2,9 +2,9 @@
 
 import React from "react";
 import { RepositoryCard } from "@/entities/repository";
-import { InfiniteScrollTrigger } from "./InfiniteScrollTrigger";
-import { useInfiniteRepositories } from "../model/useInfiniteRepositories";
 import { SearchFormData } from "@/features/search-repositories";
+import { useInfiniteRepositories } from "../model/useInfiniteRepositories";
+import { InfiniteScrollTrigger } from "./InfiniteScrollTrigger";
 
 interface RepositoryListProps {
   filters: SearchFormData | null;

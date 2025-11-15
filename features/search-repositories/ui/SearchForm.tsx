@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { SearchInput } from "./SearchInput";
-import { SearchButton } from "./SearchButton";
+import { SearchFormData } from "../model/searchSchema";
+import { useSearchForm } from "../model/useSearchForm";
+import { DateInput } from "./DateInput";
 import { FilterAccordion } from "./FilterAccordion";
 import { NumberRangeInput } from "./NumberRangeInput";
-import { DateInput } from "./DateInput";
-import { useSearchForm } from "../model/useSearchForm";
-import { SearchFormData } from "../model/searchSchema";
+import { SearchButton } from "./SearchButton";
+import { SearchInput } from "./SearchInput";
 
 interface SearchFormProps {
   onSearch: (formData: SearchFormData) => void;
@@ -17,9 +17,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-    },
+    formState: { errors },
   } = useSearchForm();
 
   const onSubmit = (data: SearchFormData) => {
@@ -56,7 +54,9 @@ export const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
             errors={errors.size}
           />
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">期間</label>
+            <label className="block text-sm font-medium text-gray-700">
+              期間
+            </label>
             <div className="grid grid-cols-2 gap-2">
               <DateInput
                 label="作成日 (YYYY-MM-DD)"
